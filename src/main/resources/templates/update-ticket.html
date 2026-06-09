@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Update Ticket</title>
+</head>
+<body>
+<h1>Update Ticket</h1>
+
+<form th:action="@{|/update/${ticket.id}|}" th:object="${ticket}" method="post">
+    <label>Name:</label>
+    <input type="text" th:field="*{name}" th:value="*{name}"/>
+    <br/>
+    <label>Description:</label>
+    <input type="text" th:field="*{description}" th:value="*{description}"/>
+    <br/>
+    <label>Priority:</label>
+    <input type="number" th:field="*{priority}" th:value="*{priority}"/>
+    <br/>
+    <button type="submit">Save</button>
+</form>
+<a th:href="@{/}">Back to List</a>
+</body>
+</html>
+

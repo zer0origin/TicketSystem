@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>View Ticket</title>
+</head>
+<body>
+<h1 th:text="${ticket.name}"></h1>
+<a th:text="|Username: ${user.get().displayName}|"></a>
+
+<div th:each="msg : ${messages}">
+    <a th:text="${msg.comment}"></a>
+</div>
+
+<form th:action="@{|/msg/add/${ticket.id}|}" method="post">
+    <label>Add Comment</label>
+    <input type="hidden" name="ticket" th:value="${ticket.id}">
+    <input type="text" th:field="${message.comment}">
+    <button type="submit">submit</button>
+</form>
+
+</body>
+</html>

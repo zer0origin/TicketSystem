@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>List Tickets</title>
+    <link th:href="@{/styles/main.css}" rel="stylesheet" />
+</head>
+    <body>
+    <h1>List Tickets</h1>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>priority</th>
+                <th>Actions</th>
+            </tr>
+            <tr th:each="ticket : ${tickets}">
+                <td th:text="${ticket.name}"></td>
+                <td th:text="${ticket.description}"></td>
+                <td th:text="${ticket.priority}"></td>
+                <td>
+                    <a th:href="@{|/view/${ticket.id}|}">View</a>
+                    <a th:href="@{|/edit/${ticket.id}|}">Edit</a>
+                    <a th:href="@{|/delete/${ticket.id}|}">Delete</a>
+                </td>
+            </tr>
+        </table>
+    <a th:href="@{/add}">New</a>
+    </body>
+</html>
