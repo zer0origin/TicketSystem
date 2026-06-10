@@ -46,7 +46,7 @@ public class TicketController {
 
     @PostMapping("/add")
     public String addTicket(Ticket ticket, Principal principal) {
-        Optional<User> user = userRepository.findUserByDisplayName(principal.getName());
+        Optional<User> user = userRepository.getOrCreateUser(principal.getName());
         user.ifPresentOrElse(user1 -> System.out.println(user1.getDisplayName()), () -> {
             User newUser = new User(principal.getName());
             userRepository.save(newUser);
@@ -81,23 +81,5 @@ public class TicketController {
         ticket.setName(ticket.getName().toUpperCase());
         ticketRepository.save(ticket);
         return "redirect:/";
-    }
-
-    @GetMapping("/view/{ticket_id}")
-    public String showViewForm(@PathVariable("ticket_id") long ticketId, Model model, Principal principal) {
-        Optional<Ticket> ticket = ticketRepository.findById(ticketId);
-
-        if (ticket.isEmpty()){
-            return "redirect:/";
-        }
-
-        Optional<User> user = userRepository.findUserByDisplayName(principal.getName());
-        List<Message> messages = messageRepository.findByTicket(ticket.get());
-
-        model.addAttribute("ticket", ticket.get());
-        model.addAttribute("user", user);
-        model.addAttribute("messages", messages);
-        model.addAttribute("message", new Message());
-        return "view-ticket";
     }
 }

@@ -5,9 +5,10 @@
 </head>
 <body>
 <h1 th:text="${ticket.name}"></h1>
-<a th:text="|Username: ${user.get().displayName}|"></a>
+<a th:text="|Username: ${user.displayName}|"></a>
 
 <div th:each="msg : ${messages}">
+    <a th:text="|${user.displayName}:|"></a>
     <a th:text="${msg.comment}"></a>
 </div>
 

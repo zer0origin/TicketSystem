@@ -9,4 +9,8 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findUserByDisplayName(String displayName);
+
+    public default Optional<User> getOrCreateUser(String displayName){
+        return this.findUserByDisplayName(displayName).or(() -> Optional.of(this.save(new User(displayName))));
+    }
 }
