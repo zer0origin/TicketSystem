@@ -97,9 +97,6 @@ public class TicketController {
         model.addAttribute("ticket", ticket.get());
         model.addAttribute("user", user);
         model.addAttribute("messages", messages);
-
-        System.out.printf("Number of messages: %d\n", messages.size());
-
         model.addAttribute("message", new Message());
         return "view-ticket";
     }

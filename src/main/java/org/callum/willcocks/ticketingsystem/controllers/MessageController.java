@@ -31,7 +31,6 @@ public class MessageController {
         }
 
         message.setTicket(ticket.get());
-        System.out.printf("Adding message to ticket: %d\n", ticket.get().getId());
         messageRepository.save(message);
         System.out.println("Message Saved!\n");
 
