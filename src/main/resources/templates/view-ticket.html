@@ -13,7 +13,6 @@
 
 <form th:action="@{|/msg/add/${ticket.id}|}" method="post">
     <label>Add Comment</label>
-    <input type="hidden" name="ticket" th:value="${ticket.id}">
     <input type="text" th:field="${message.comment}">
     <button type="submit">submit</button>
 </form>

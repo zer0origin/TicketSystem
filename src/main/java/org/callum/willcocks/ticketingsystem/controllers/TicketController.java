@@ -1,4 +1,4 @@
-package org.callum.willcocks.ticketingsystem;
+package org.callum.willcocks.ticketingsystem.controllers;
 
 import org.callum.willcocks.ticketingsystem.models.Message;
 import org.callum.willcocks.ticketingsystem.models.Ticket;
@@ -12,11 +12,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Controller
 public class TicketController {
@@ -85,9 +83,9 @@ public class TicketController {
         return "redirect:/";
     }
 
-    @GetMapping("/view/{id}")
-    public String showViewForm(@PathVariable("id") long id, Model model, Principal principal) {
-        Optional<Ticket> ticket = ticketRepository.findById(id);
+    @GetMapping("/view/{ticket_id}")
+    public String showViewForm(@PathVariable("ticket_id") long ticketId, Model model, Principal principal) {
+        Optional<Ticket> ticket = ticketRepository.findById(ticketId);
 
         if (ticket.isEmpty()){
             return "redirect:/";

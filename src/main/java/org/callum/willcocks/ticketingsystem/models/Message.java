@@ -3,34 +3,30 @@ package org.callum.willcocks.ticketingsystem.models;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Entity
 public class Message {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-    @OneToOne()
+    @ManyToOne
     @JoinColumn(name = "ticket_id")
     private Ticket ticket;
     private String comment;
     private Date date;
 
-    public Ticket getTicket() {
-        return ticket;
+    public Message() {
     }
 
-    public void setTicket(Ticket ticket) {
-        this.ticket = ticket;
-    }
-
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -42,20 +38,12 @@ public class Message {
         this.user = user;
     }
 
-    public String getMessage() {
-        return comment;
+    public Ticket getTicket() {
+        return ticket;
     }
 
-    public void setMessage(String message) {
-        this.comment = message;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
+    public void setTicket(Ticket ticket) {
+        this.ticket = ticket;
     }
 
     public String getComment() {
@@ -64,5 +52,13 @@ public class Message {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

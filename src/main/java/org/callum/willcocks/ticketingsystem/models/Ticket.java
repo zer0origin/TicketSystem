@@ -11,9 +11,6 @@ public class Ticket {
     private String description;
     private Byte priority;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Message> messages;
-
     public Ticket() {
     }
 
@@ -55,11 +52,4 @@ public class Ticket {
         this.priority = priority;
     }
 
-     public List<Message> getMessages() {
-        return messages;
-    }
-
-    public void setMessages(List<Message> messages) {
-        this.messages = messages;
-    }
 }
