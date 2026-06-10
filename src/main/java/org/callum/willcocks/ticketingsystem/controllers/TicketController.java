@@ -7,13 +7,16 @@ import org.callum.willcocks.ticketingsystem.repository.MessageRepository;
 import org.callum.willcocks.ticketingsystem.repository.TicketRepository;
 import org.callum.willcocks.ticketingsystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+
 import java.security.Principal;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Controller
@@ -32,13 +35,24 @@ public class TicketController {
     }
 
     @GetMapping("/")
-    public String listTickets(Model model) {
+    public String listTickets(Model model, Authentication authentication) {
+        if (authentication.getAuthorities().stream().noneMatch(a -> Objects.equals(a.getAuthority(), "ROLE_view-all-tickets"))) {
+            Optional<User> user = userRepository.findUserByDisplayName(authentication.getName()).or(() -> {
+                User newUser = new User(authentication.getName());
+                userRepository.save(newUser);
+                return Optional.of(newUser);
+            });
+
+            model.addAttribute("tickets", ticketRepository.findTicketByCreatedBy(user.get()));
+            return "list-tickets";
+        }
+
         model.addAttribute("tickets", ticketRepository.findAll());
         return "list-tickets";
     }
 
     @GetMapping("/add")
-    public String showAddForm(Model model) {
+    public String showAddForm(Model model, Principal principal) {
         model.addAttribute("ticket", new Ticket());
 
         return "add-ticket";
@@ -46,14 +60,16 @@ public class TicketController {
 
     @PostMapping("/add")
     public String addTicket(Ticket ticket, Principal principal) {
-        Optional<User> user = userRepository.getOrCreateUser(principal.getName());
-        user.ifPresentOrElse(user1 -> System.out.println(user1.getDisplayName()), () -> {
+        Optional<User> user = userRepository.findUserByDisplayName(principal.getName()).or(() -> {
             User newUser = new User(principal.getName());
             userRepository.save(newUser);
+            return Optional.of(newUser);
         });
 
         ticket.setName(ticket.getName().toUpperCase());
+        ticket.setCreatedBy(user.get());
         ticketRepository.save(ticket);
+
         return "redirect:/";
     }
 

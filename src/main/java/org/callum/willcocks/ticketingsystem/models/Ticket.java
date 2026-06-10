@@ -10,14 +10,36 @@ public class Ticket {
     private String name;
     private String description;
     private Byte priority;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User createdBy;
 
     public Ticket() {
+    }
+
+    public Ticket(User createdBy) {
+        this.createdBy = createdBy;
     }
 
     public Ticket(String name, String description, Byte priority) {
         this.name = name;
         this.description = description;
         this.priority = priority;
+    }
+
+    public Ticket(String name, String description, Byte priority, User createdBy) {
+        this.name = name;
+        this.description = description;
+        this.priority = priority;
+        this.createdBy = createdBy;
+    }
+
+    public User getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(User createdBy) {
+        this.createdBy = createdBy;
     }
 
     public long getId() {
