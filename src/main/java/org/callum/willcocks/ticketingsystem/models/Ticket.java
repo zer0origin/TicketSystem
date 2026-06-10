@@ -1,12 +1,13 @@
 package org.callum.willcocks.ticketingsystem.models;
 import jakarta.persistence.*;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 public class Ticket {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
     private String name;
     private String description;
     private Byte priority;
@@ -42,11 +43,11 @@ public class Ticket {
         this.createdBy = createdBy;
     }
 
-    public long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

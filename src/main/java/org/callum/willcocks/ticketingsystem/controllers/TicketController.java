@@ -18,6 +18,7 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 @Controller
 public class TicketController {
@@ -74,7 +75,7 @@ public class TicketController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteTicket(@PathVariable("id") long id) {
+    public String deleteTicket(@PathVariable("id") UUID id) {
         Ticket ticket = ticketRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid item Id:" + id));
 
@@ -83,7 +84,7 @@ public class TicketController {
     }
 
     @GetMapping("/edit/{id}")
-    public String showUpdateForm(@PathVariable("id") long id, Model model) {
+    public String showUpdateForm(@PathVariable("id") UUID id, Model model) {
         Ticket ticket = ticketRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid item Id:" + id));
 
@@ -92,7 +93,7 @@ public class TicketController {
     }
 
     @PostMapping("/update/{id}")
-    public String updateTicket(@PathVariable("id") long id, Ticket ticket) {
+    public String updateTicket(@PathVariable("id") UUID id, Ticket ticket) {
         ticket.setId(id);
         ticket.setName(ticket.getName().toUpperCase());
         ticketRepository.save(ticket);

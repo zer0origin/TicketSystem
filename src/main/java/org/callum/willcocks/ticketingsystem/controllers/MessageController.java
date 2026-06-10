@@ -7,6 +7,7 @@ import org.callum.willcocks.ticketingsystem.repository.MessageRepository;
 import org.callum.willcocks.ticketingsystem.repository.TicketRepository;
 import org.callum.willcocks.ticketingsystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +16,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 @Controller
 public class MessageController {
@@ -32,13 +35,21 @@ public class MessageController {
     }
 
     @GetMapping("/view/{ticket_id}")
-    public String showViewForm(@PathVariable("ticket_id") long ticketId, Model model, Principal principal) {
+    public String showViewForm(@PathVariable("ticket_id") UUID ticketId, Model model, Authentication authentication) {
         Optional<Ticket> ticket = ticketRepository.findById(ticketId);
-        Optional<User> user = userRepository.findUserByDisplayName(principal.getName()).or(() -> {
-            User newUser = new User(principal.getName());
+
+        Optional<User> user = userRepository.findUserByDisplayName(authentication.getName()).or(() -> {
+            User newUser = new User(authentication.getName());
             userRepository.save(newUser);
             return Optional.of(newUser);
         });
+
+        if (authentication.getAuthorities().stream().noneMatch(grantedAuthority -> Objects.equals(grantedAuthority.getAuthority(), "ROLE_view-all-tickets"))){
+            if (!Objects.equals(authentication.getName(), ticket.get().getCreatedBy().getDisplayName())){
+                System.out.println("User does not have permission to view this ticket!");
+                return "redirect:/";
+            }
+        }
 
         if (ticket.isEmpty() || user.isEmpty()){
             System.out.println("Ticket or User was not provided!");
@@ -56,7 +67,7 @@ public class MessageController {
     }
 
     @PostMapping("/msg/add/{ticket_id}")
-    public String AddMessageToTicket(@PathVariable("ticket_id") long ticketId, Principal principal, Message message){
+    public String AddMessageToTicket(@PathVariable("ticket_id") UUID ticketId, Principal principal, Message message){
         Ticket ticket = ticketRepository.getReferenceById(ticketId);
         Optional<User> user = userRepository.findUserByDisplayName(principal.getName()).or(() -> {
             User newUser = new User(principal.getName());
