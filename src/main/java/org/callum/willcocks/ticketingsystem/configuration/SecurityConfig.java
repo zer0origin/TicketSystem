@@ -32,6 +32,7 @@ class SecurityConfig {
         UserDetails user = User.builder()
                 .username("admin")
                 .password("{noop}admin")
+                .roles("view-all-tickets","comment-tickets")
                 .build();
 
         UserDetails user1 = User.builder()

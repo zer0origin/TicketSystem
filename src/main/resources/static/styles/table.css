@@ -1,0 +1,51 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    line-height: 1.5;
+}
+
+.wrapper {
+    overflow: scroll;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+th,
+caption {
+    text-align: start;
+}
+
+caption {
+    margin-block: 0.75rem;
+}
+
+thead th:not(:first-child),
+td {
+    text-align: end;
+}
+
+th,
+td {
+    border: 1px solid;
+}
+
+thead {
+    border-block-end: 2px solid;
+    background: whitesmoke;
+}
+
+tfoot {
+    border-block: 2px solid;
+    background: whitesmoke;
+}
+
+th,
+td {
+    border: 1px solid lightgrey;
+    padding: 0.25rem 0.75rem;
+}

@@ -20,6 +20,7 @@ public class Message {
     private Date date;
 
     public Message() {
+        date = new Date();
     }
 
     public UUID getId() {

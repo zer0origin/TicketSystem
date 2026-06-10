@@ -2,21 +2,26 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>View Ticket</title>
+    <link th:href="@{/styles/view-ticket.css}" rel="stylesheet" />
+    <link th:href="@{/styles/main.css}" rel="stylesheet" />
 </head>
 <body>
-<h1 th:text="${ticket.name}"></h1>
-<a th:text="|Username: ${user.displayName}|"></a>
+<div id = "main-content">
+    <div id="ticket-info">
+        <h1 id="title" th:text="${ticket.name}"></h1>
+        <p id="desc" th:text="${ticket.description}"></p>
+    </div>
+    <hr>
+    <div id="comment-container">
+        <div th:each="msg : ${messages}">
+            <a th:text="|${#dates.format(msg.date.toGMTString(), 'dd-MM-yyyy HH:mm')} ${msg.user.displayName}: ${msg.comment}|"></a>
+        </div>
+    </div>
 
-<div th:each="msg : ${messages}">
-    <a th:text="|${user.displayName}:|"></a>
-    <a th:text="${msg.comment}"></a>
+    <form class="submit-comment-form" th:action="@{|/msg/add/${ticket.id}|}" method="post">
+        <input type="text" th:field="${message.comment}" autofocus>
+    </form>
+
 </div>
-
-<form th:action="@{|/msg/add/${ticket.id}|}" method="post">
-    <label>Add Comment</label>
-    <input type="text" th:field="${message.comment}">
-    <button type="submit">submit</button>
-</form>
-
 </body>
 </html>
