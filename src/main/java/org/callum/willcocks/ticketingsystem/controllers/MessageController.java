@@ -34,6 +34,6 @@ public class MessageController {
         messageRepository.save(message);
         System.out.println("Message Saved!\n");
 
-        return "redirect:/";
+        return "redirect:/view/" + ticketId;
     }
 }
