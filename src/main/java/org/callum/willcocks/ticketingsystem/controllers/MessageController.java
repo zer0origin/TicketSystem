@@ -34,7 +34,11 @@ public class MessageController {
     @GetMapping("/view/{ticket_id}")
     public String showViewForm(@PathVariable("ticket_id") long ticketId, Model model, Principal principal) {
         Optional<Ticket> ticket = ticketRepository.findById(ticketId);
-        Optional<User> user = userRepository.getOrCreateUser(principal.getName());
+        Optional<User> user = userRepository.findUserByDisplayName(principal.getName()).or(() -> {
+            User newUser = new User(principal.getName());
+            userRepository.save(newUser);
+            return Optional.of(newUser);
+        });
 
         if (ticket.isEmpty() || user.isEmpty()){
             System.out.println("Ticket or User was not provided!");
@@ -53,18 +57,21 @@ public class MessageController {
 
     @PostMapping("/msg/add/{ticket_id}")
     public String AddMessageToTicket(@PathVariable("ticket_id") long ticketId, Principal principal, Message message){
-        Optional<Ticket> ticket = ticketRepository.findById(ticketId);
-        Optional<User> user = userRepository.getOrCreateUser(principal.getName());
+        Ticket ticket = ticketRepository.getReferenceById(ticketId);
+        Optional<User> user = userRepository.findUserByDisplayName(principal.getName()).or(() -> {
+            User newUser = new User(principal.getName());
+            userRepository.save(newUser);
+            return Optional.of(newUser);
+        });
 
-        if (ticket.isEmpty() || user.isEmpty()){
+        if (user.isEmpty()){
             return "redirect:/";
         }
 
-        message.setTicket(ticket.get());
+        message.setTicket(ticket);
         message.setUser(user.get());
         messageRepository.save(message);
 
         return "redirect:/view/" + ticketId;
     }
-
 }
