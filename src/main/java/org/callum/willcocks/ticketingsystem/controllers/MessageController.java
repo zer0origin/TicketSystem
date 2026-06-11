@@ -10,9 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
@@ -22,20 +20,18 @@ import java.util.UUID;
 
 @Controller
 public class MessageController {
-    @Autowired
-    private MessageRepository messageRepository;
+    private final MessageRepository messageRepository;
+    private final TicketRepository ticketRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private TicketRepository ticketRepository;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    public MessageController() {
+    public MessageController(MessageRepository messageRepository, TicketRepository ticketRepository, UserRepository userRepository) {
+        this.messageRepository = messageRepository;
+        this.ticketRepository = ticketRepository;
+        this.userRepository = userRepository;
     }
 
     @GetMapping("/view/{ticket_id}")
-    public String showViewForm(@PathVariable("ticket_id") UUID ticketId, Model model, Authentication authentication) {
+    public String showViewForm(@PathVariable("ticket_id") UUID ticketId, @RequestParam Optional<String> findUserErrorMessage, Model model, Authentication authentication) {
         Optional<Ticket> ticket = ticketRepository.findById(ticketId);
 
         Optional<User> user = userRepository.findUserByDisplayName(authentication.getName()).or(() -> {
@@ -59,6 +55,8 @@ public class MessageController {
         model.addAttribute("ticket", ticket.get());
         model.addAttribute("user", user.get());
         model.addAttribute("message", new Message());
+        model.addAttribute("usernameToSearch", "");
+        model.addAttribute("findUserErrorMessage", findUserErrorMessage);
 
         List<Message> messages = messageRepository.findByTicket(ticket.get());
         model.addAttribute("messages", messages);

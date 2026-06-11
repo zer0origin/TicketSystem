@@ -1,9 +1,10 @@
 body{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     width: 100%;
-    align-items: center;
+    align-items: baseline;
     gap: 2px;
+    justify-content: center;
 }
 
 #main-content{

@@ -23,5 +23,16 @@
     </form>
 
 </div>
+<div class="user-view">
+    <p>Users in ticket</p>
+
+    <form class="add-user-submit-form" th:action="@{|/${ticket.id}/participant/add|}" method="post">
+        <input type="text" name="usernameToSearch">
+    </form>
+
+    <div th:if="${findUserErrorMessage.isPresent()}">
+        <p th:text="|Error: ${findUserErrorMessage.get()}|"></p>
+    </div>
+</div>
 </body>
 </html>

@@ -30,3 +30,7 @@
         width: 100%;
     }
 }
+
+#user-view{
+    display: flex;
+}

@@ -15,6 +15,10 @@ public class Ticket {
     @JoinColumn(name = "user_id")
     private User createdBy;
 
+    @OneToMany
+    @JoinColumn(name = "ticket_id")
+    private List<TicketParticipants> ticketParticipants;
+
     public Ticket() {
     }
 

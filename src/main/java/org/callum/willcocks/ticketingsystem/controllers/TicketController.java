@@ -15,24 +15,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.security.Principal;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
 @Controller
 public class TicketController {
+    private final TicketRepository ticketRepository;
+    private final UserRepository userRepository;
+    private final MessageRepository messageRepository;
 
-    @Autowired
-    private TicketRepository ticketRepository;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private MessageRepository messageRepository;
-
-    public TicketController() {
+    public TicketController(TicketRepository ticketRepository, UserRepository userRepository, MessageRepository messageRepository) {
+        this.ticketRepository = ticketRepository;
+        this.userRepository = userRepository;
+        this.messageRepository = messageRepository;
     }
 
     @GetMapping("/")
@@ -60,18 +56,18 @@ public class TicketController {
     }
 
     @PostMapping("/add")
-    public String addTicket(Ticket ticket, Principal principal) {
-        Optional<User> user = userRepository.findUserByDisplayName(principal.getName()).or(() -> {
-            User newUser = new User(principal.getName());
-            userRepository.save(newUser);
-            return Optional.of(newUser);
-        });
+        public String addTicket(Ticket ticket, Principal principal) {
+            Optional<User> user = userRepository.findUserByDisplayName(principal.getName()).or(() -> {
+                User newUser = new User(principal.getName());
+                userRepository.save(newUser);
+                return Optional.of(newUser);
+            });
 
-        ticket.setName(ticket.getName().toUpperCase());
-        ticket.setCreatedBy(user.get());
-        ticketRepository.save(ticket);
+            ticket.setName(ticket.getName().toUpperCase());
+            ticket.setCreatedBy(user.get());
+            ticketRepository.save(ticket);
 
-        return "redirect:/";
+            return "redirect:/";
     }
 
     @GetMapping("/delete/{id}")

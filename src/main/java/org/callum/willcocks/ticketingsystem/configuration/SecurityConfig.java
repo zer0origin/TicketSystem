@@ -40,6 +40,11 @@ class SecurityConfig {
                 .password("{noop}test")
                 .build();
 
-        return new InMemoryUserDetailsManager(List.of(user, user1));
+        UserDetails user2 = User.builder()
+                .username("john")
+                .password("{noop}test")
+                .build();
+
+        return new InMemoryUserDetailsManager(List.of(user, user1, user2));
     }
 }
