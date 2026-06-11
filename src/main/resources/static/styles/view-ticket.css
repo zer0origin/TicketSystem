@@ -1,4 +1,4 @@
-#comment-container{
+#comment-container {
     padding: 5px;
     width: 100%;
     height: 500px;
@@ -9,15 +9,15 @@
     gap: 8px;
 }
 
-#ticket-info{
+#ticket-info {
     width: 100%;
 
-    #title{
+    #title {
         text-align: center;
     }
 }
 
-.submit-comment-form{
+.submit-comment-form {
     display: flex;
     flex-direction: column;
     gap: 2px;
@@ -26,11 +26,39 @@
     align-items: center;
     width: 100%;
 
-    button,input{
+    button, input {
         width: 100%;
     }
 }
 
-#user-view{
+.user-view {
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    top: 300px;
+    position: relative;
+    padding: 5px;
+    border: black;
+    border-style: dashed;
+    border-width: 2px;
+}
+
+.ticket-content{
+    display: flex;
+    flex-direction: column;
+}
+
+.user-remove-attribute:link {
+    text-decoration: none;
+
+}.user-remove-attribute:visited  {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.users-list{
+    width: 100%;
 }

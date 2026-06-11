@@ -79,4 +79,11 @@ public class Ticket {
         this.priority = priority;
     }
 
+    public List<TicketParticipants> getTicketParticipants() {
+        return ticketParticipants;
+    }
+
+    public void setTicketParticipants(List<TicketParticipants> ticketParticipants) {
+        this.ticketParticipants = ticketParticipants;
+    }
 }

@@ -2,11 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>View Ticket</title>
-    <link th:href="@{/styles/view-ticket.css}" rel="stylesheet" />
-    <link th:href="@{/styles/main.css}" rel="stylesheet" />
+    <link th:href="@{/styles/view-ticket.css}" rel="stylesheet"/>
+    <link th:href="@{/styles/main.css}" rel="stylesheet"/>
 </head>
 <body>
-<div id = "main-content">
+<div id="main-content">
     <div id="ticket-info">
         <h1 id="title" th:text="${ticket.name}"></h1>
         <p id="desc" th:text="${ticket.description}"></p>
@@ -29,6 +29,15 @@
     <form class="add-user-submit-form" th:action="@{|/${ticket.id}/participant/add|}" method="post">
         <input type="text" name="usernameToSearch">
     </form>
+
+    <div th:if="${!usersInTicket.isEmpty()}" class="users-list">
+        <hr>
+        <p><strong>Users:</strong></p>
+        <div th:each="userParticipant : ${usersInTicket}" th:object="${userParticipant.participant}">
+            <a th:text="|${userParticipantStat.count}: |"></a>
+            <a class="user-remove-attribute" th:text="|*{displayName}|" th:href="@{|/${ticket.id}/participant/remove/*{displayName}|}"></a>
+        </div>
+    </div>
 
     <div th:if="${findUserErrorMessage.isPresent()}">
         <p th:text="|Error: ${findUserErrorMessage.get()}|"></p>

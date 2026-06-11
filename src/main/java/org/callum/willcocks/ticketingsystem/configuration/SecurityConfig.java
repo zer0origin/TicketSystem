@@ -1,5 +1,6 @@
 package org.callum.willcocks.ticketingsystem.configuration;
 
+import org.callum.willcocks.ticketingsystem.repository.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,6 +17,12 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 class SecurityConfig {
+    UserRepository userRepository;
+
+    public SecurityConfig(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
     @Bean
     SecurityFilterChain configure(HttpSecurity http) throws Exception {
         http.headers(httpSecurityHeadersConfigurer -> httpSecurityHeadersConfigurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
@@ -44,6 +51,10 @@ class SecurityConfig {
                 .username("john")
                 .password("{noop}test")
                 .build();
+
+        userRepository.save(new org.callum.willcocks.ticketingsystem.models.User("admin"));
+        userRepository.save(new org.callum.willcocks.ticketingsystem.models.User("test"));
+        userRepository.save(new org.callum.willcocks.ticketingsystem.models.User("john"));
 
         return new InMemoryUserDetailsManager(List.of(user, user1, user2));
     }

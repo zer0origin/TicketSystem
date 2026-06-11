@@ -55,8 +55,10 @@ public class MessageController {
         model.addAttribute("ticket", ticket.get());
         model.addAttribute("user", user.get());
         model.addAttribute("message", new Message());
+
         model.addAttribute("usernameToSearch", "");
         model.addAttribute("findUserErrorMessage", findUserErrorMessage);
+        model.addAttribute("usersInTicket", ticket.get().getTicketParticipants());
 
         List<Message> messages = messageRepository.findByTicket(ticket.get());
         model.addAttribute("messages", messages);
