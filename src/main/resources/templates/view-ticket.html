@@ -35,8 +35,10 @@
         <hr>
         <p><strong>Users:</strong></p>
         <div th:each="userParticipant : ${usersInTicket}" th:object="${userParticipant.participant}">
-            <a th:text="|${userParticipantStat.count}: |"></a>
-            <a class="user-remove-attribute" th:text="|*{displayName}|" th:href="@{|/${ticket.id}/participant/remove/*{displayName}|}"></a>
+            <form th:id="|*{displayName}-form|" th:action="@{|/${ticket.id}/participant/remove/*{displayName}|}" th:method="post">
+                <a th:text="|${userParticipantStat.count}: |"></a>
+                <button class="as-text user-remove-attribute" type="submit" th:text="|*{displayName}|"></button>
+            </form>
         </div>
     </div>
 
