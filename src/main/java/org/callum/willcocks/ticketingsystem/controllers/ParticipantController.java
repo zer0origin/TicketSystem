@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -45,6 +46,27 @@ public class ParticipantController {
 
         ticketParticipants.setParticipant(user.get());
         participantRepository.save(ticketParticipants);
+        return "redirect:/view/" + ticketId;
+    }
+
+    @PostMapping("/{ticket_id}/participant/remove/{display_name}")
+    public String removeParticipant(@PathVariable("ticket_id") UUID ticketId, @PathVariable("display_name") String displayName, Authentication authentication){
+        Ticket ticket = ticketRepository.findById(ticketId).orElseThrow(() -> new IllegalArgumentException("UUID does not exist!"));
+
+        if (!authentication.getName().equals(ticket.getCreatedBy().getDisplayName()) || authentication.getAuthorities().stream().noneMatch(a -> Objects.equals(a.getAuthority(), "ROLE_view-all-tickets"))){
+            System.out.println("Insufficient Permissions.");
+            return "redirect:/view/" + ticketId;
+        }
+
+        Optional<User> user = userRepository.findUserByDisplayName(displayName);
+        if (user.isEmpty()){
+            System.out.println("No user provided.");
+            return "redirect:/view/" + ticketId;
+        }
+
+        TicketParticipants byTicketAndParticipant = participantRepository.findOneByTicketAndParticipant(ticket, user.get());
+        participantRepository.delete(byTicketAndParticipant);
+
         return "redirect:/view/" + ticketId;
     }
 }
