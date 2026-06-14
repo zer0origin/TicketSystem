@@ -2,21 +2,15 @@ package org.callum.willcocks.ticketingsystem.controllers;
 
 import org.callum.willcocks.ticketingsystem.models.Message;
 import org.callum.willcocks.ticketingsystem.models.Ticket;
-import org.callum.willcocks.ticketingsystem.models.TicketParticipants;
 import org.callum.willcocks.ticketingsystem.models.User;
 import org.callum.willcocks.ticketingsystem.repository.MessageRepository;
-import org.callum.willcocks.ticketingsystem.repository.ParticipantRepository;
 import org.callum.willcocks.ticketingsystem.repository.TicketRepository;
 import org.callum.willcocks.ticketingsystem.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.security.Principal;
-import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
