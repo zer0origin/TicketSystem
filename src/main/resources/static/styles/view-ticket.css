@@ -55,10 +55,6 @@
     text-decoration: none;
 }
 
-a:hover {
-    text-decoration: underline;
-}
-
 .users-list{
     width: 100%;
 }
