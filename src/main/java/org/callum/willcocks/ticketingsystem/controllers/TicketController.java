@@ -67,14 +67,15 @@ public class TicketController {
 
     @PostMapping("/add")
     public String addTicket(Ticket ticket, Principal principal) {
-        Optional<User> user = userRepository.findUserByDisplayName(principal.getName()).or(() -> {
+        User user = userRepository.findUserByDisplayName(principal.getName()).orElseGet(() -> {
             User newUser = new User(principal.getName());
             userRepository.save(newUser);
-            return Optional.of(newUser);
+            return newUser;
         });
 
         ticket.setName(ticket.getName().toUpperCase());
-        ticket.setCreatedBy(user.get());
+        ticket.setCreatedBy(user);
+        ticket.setCreatedOn(new Date());
         ticketRepository.save(ticket);
 
         return "redirect:/";
