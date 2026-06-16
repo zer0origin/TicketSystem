@@ -4,16 +4,19 @@
     <title>View Ticket</title>
     <link th:href="@{/styles/view-ticket.css}" rel="stylesheet"/>
     <link th:href="@{/styles/main.css}" rel="stylesheet"/>
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
 </head>
 <body>
-<a th:href="@{/logout}">Logout</a>
 <div id="main-content">
     <div id="ticket-info">
         <h1 id="title" th:text="${ticket.name}"></h1>
-        <p id="desc" th:text="${ticket.description}"></p>
     </div>
     <hr>
     <div id="comment-container">
+        <div th:text="|Ticket created at ${ticket.}:|"></div>
         <div th:each="msg : ${messages}">
             <a th:text="|${#dates.format(msg.date.toGMTString(), 'dd-MM-yyyy HH:mm')} ${msg.user.displayName}: ${msg.comment}|"></a>
         </div>
@@ -24,26 +27,45 @@
     </form>
 
 </div>
-<div class="user-view">
-    <p>Users in ticket</p>
 
-    <form class="add-user-submit-form" th:action="@{|/${ticket.id}/participant/add|}" method="post">
-        <input type="text" name="usernameToSearch">
-    </form>
+<div id="ticket-controls" class="user-view card">
+    <div class="w-100">
+        <p>Description</p>
+        <p id="desc" th:text="${ticket.description}"></p>
+    </div>
 
-    <div th:if="${!usersInTicket.isEmpty()}" class="users-list">
-        <hr>
-        <p><strong>Users:</strong></p>
-        <div th:each="userParticipant : ${usersInTicket}" th:object="${userParticipant.participant}">
-            <form th:id="|*{displayName}-form|" th:action="@{|/${ticket.id}/participant/remove/*{displayName}|}" th:method="post">
-                <a th:text="|${userParticipantStat.count}: |"></a>
-                <button class="as-text user-remove-attribute" type="submit" th:text="|*{displayName}|"></button>
-            </form>
+    <hr>
+
+    <div class="w-100">
+        <p>Tags<button class="as-text">+</button></p>
+
+        <div id="ticket-controls-tags-container" class="d-flex flex-row">
+            <span class="badge badge-secondary">Bug</span>
+            <span class="badge badge-secondary">Overdue</span>
+            <span class="badge badge-secondary">New</span>
         </div>
     </div>
 
-    <div th:if="${findUserErrorMessage.isPresent()}">
-        <p th:text="|Error: ${findUserErrorMessage.get()}|"></p>
+    <hr>
+
+    <div class="w-100">
+        <p>Users in ticket</p>
+
+        <form class="add-user-submit-form" th:action="@{|/${ticket.id}/participant/add|}" method="post">
+            <input type="text" name="usernameToSearch">
+        </form>
+
+        <div th:if="${!usersInTicket.isEmpty()}" class="users-list">
+            <div th:each="userParticipant : ${usersInTicket}" th:object="${userParticipant.participant}">
+                <form th:id="|*{displayName}-form|" th:action="@{|/${ticket.id}/participant/remove/*{displayName}|}" th:method="post">
+                    <a th:text="|${userParticipantStat.count}: |"><button class="as-text user-remove-attribute" type="submit" th:text="|*{displayName}|"></button></a>
+                </form>
+            </div>
+        </div>
+
+        <div th:if="${findUserErrorMessage.isPresent()}">
+            <p th:text="|Error: ${findUserErrorMessage.get()}|"></p>
+        </div>
     </div>
 </div>
 </body>

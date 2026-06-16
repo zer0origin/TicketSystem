@@ -21,8 +21,6 @@
     display: flex;
     flex-direction: column;
     gap: 2px;
-    padding-left: 40px;
-    padding-right: 40px;
     align-items: center;
     width: 100%;
 
@@ -35,12 +33,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    top: 300px;
+    top: 142px;
     position: relative;
     padding: 5px;
-    border: black;
-    border-style: dashed;
-    border-width: 2px;
 }
 
 .ticket-content{
@@ -57,4 +52,12 @@
 
 .users-list{
     width: 100%;
+}
+
+#ticket-controls-tags-container{
+    gap: 5px;
+}
+
+#desc{
+    max-width: 194px;
 }

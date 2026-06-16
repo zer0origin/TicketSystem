@@ -1,5 +1,7 @@
 package org.callum.willcocks.ticketingsystem.models;
 import jakarta.persistence.*;
+
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,6 +16,7 @@ public class Ticket {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User createdBy;
+    private Date createdOn;
 
     @OneToMany
     @JoinColumn(name = "ticket_id")
@@ -86,4 +89,13 @@ public class Ticket {
     public void setTicketParticipants(List<TicketParticipants> ticketParticipants) {
         this.ticketParticipants = ticketParticipants;
     }
+
+    public Date getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(Date createdOn) {
+        this.createdOn = createdOn;
+    }
+
 }
