@@ -20,10 +20,10 @@
             <button type="submit">Save</button>
             <a th:href="@{/}">Back to List</a>
 
-            <div id="add-item-errors">
-                <div>Fill in required attributes!</div>
-                <div>Title too long!</div>
-                <div>Description too long!</div>
+            <div th:if="error" th:switch="error" id="add-item-errors">
+                <div th:case="missingAttributes">Fill in required attributes!</div>
+                <div th:case="exceededTitleLength">Title too long!</div>
+                <div th:case="exceededDescLength">Description too long!</div>
             </div>
         </form>
     </body>
