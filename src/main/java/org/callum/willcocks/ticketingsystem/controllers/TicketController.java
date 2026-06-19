@@ -59,8 +59,9 @@ public class TicketController {
     }
 
     @GetMapping("/add")
-    public String showAddForm(Model model, Principal principal) {
+    public String showAddForm(Model model, @RequestParam Optional<String> findUserErrorMessage) {
         model.addAttribute("ticket", new Ticket());
+        model.addAttribute("error", findUserErrorMessage);
 
         return "add-ticket";
     }
@@ -72,6 +73,22 @@ public class TicketController {
             userRepository.save(newUser);
             return newUser;
         });
+
+        if (ticket.getName().isBlank()){
+            return "redirect:/add?error=missingAttributes";
+        }
+
+        if (ticket.getDescription().isBlank()){
+            return "redirect:/add?error=missingAttributes";
+        }
+
+        if (ticket.getName().length() > 100){
+            return "redirect:/add?error=exceededTitleLength";
+        }
+
+        if (ticket.getDescription().length() > 300){
+            return "redirect:/add?error=exceededDescLength";
+        }
 
         ticket.setName(ticket.getName().toUpperCase());
         ticket.setCreatedBy(user);
