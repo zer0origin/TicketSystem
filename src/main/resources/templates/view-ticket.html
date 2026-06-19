@@ -16,7 +16,8 @@
     </div>
     <hr>
     <div id="comment-container">
-        <div th:text="|Ticket created at ${ticket.}:|"></div>
+        <div><strong>[System Message] </strong><span th:text="|Ticket created at: ${#dates.format(ticket.createdOn.toGMTString(), 'dd-MM-yyyy HH:mm')}|"></span></div>
+
         <div th:each="msg : ${messages}">
             <a th:text="|${#dates.format(msg.date.toGMTString(), 'dd-MM-yyyy HH:mm')} ${msg.user.displayName}: ${msg.comment}|"></a>
         </div>
@@ -25,7 +26,6 @@
     <form class="submit-comment-form" th:action="@{|/msg/add/${ticket.id}|}" method="post">
         <input type="text" th:field="${message.comment}" autofocus>
     </form>
-
 </div>
 
 <div id="ticket-controls" class="user-view card">
@@ -37,7 +37,9 @@
     <hr>
 
     <div class="w-100">
-        <p>Tags<button class="as-text">+</button></p>
+        <p>Tags
+            <button class="as-text">+</button>
+        </p>
 
         <div id="ticket-controls-tags-container" class="d-flex flex-row">
             <span class="badge badge-secondary">Bug</span>
@@ -57,8 +59,11 @@
 
         <div th:if="${!usersInTicket.isEmpty()}" class="users-list">
             <div th:each="userParticipant : ${usersInTicket}" th:object="${userParticipant.participant}">
-                <form th:id="|*{displayName}-form|" th:action="@{|/${ticket.id}/participant/remove/*{displayName}|}" th:method="post">
-                    <a th:text="|${userParticipantStat.count}: |"><button class="as-text user-remove-attribute" type="submit" th:text="|*{displayName}|"></button></a>
+                <form th:id="|*{displayName}-form|" th:action="@{|/${ticket.id}/participant/remove/*{displayName}|}"
+                      th:method="post">
+                    <a th:text="|${userParticipantStat.count}: |">
+                        <button class="as-text user-remove-attribute" type="submit" th:text="|*{displayName}|"></button>
+                    </a>
                 </form>
             </div>
         </div>
