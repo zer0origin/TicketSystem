@@ -1,0 +1,27 @@
+button.as-text {
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+}
+
+a.as-text {
+    background:none;
+    text-decoration: none;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    color: black;
+}
+
+a.as-text:visited {
+    background:none;
+    text-decoration: none;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    color: black;
+}
