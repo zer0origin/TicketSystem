@@ -3,17 +3,18 @@
 <head>
     <title>List Tickets</title>
     <link th:href="@{/styles/table.css}" rel="stylesheet" />
+    <link th:href="@{/styles/util.css}" rel="stylesheet" />
 </head>
     <body>
     <a th:href="@{/logout}">Logout</a>
-<!--Add a Sort/filter by: Date, CreatedBy, CreatedOn, Priority,-->
+<!--Add a Sort/filter by: Date, CreatedBy, CreatedOn, Priority, don't forget ▼-->
     <h1>List Tickets</h1>
         <table>
             <tr>
-                <th>Name</th>
-                <th>Description</th>
-                <th>priority</th>
-                <th>Actions</th>
+                <th><a class="as-text" th:href="@{|/?sort=nameAsc|}">Name <span hidden="hidden">▲</span></a></th>
+                <th><a class="as-text" th:href="@{|/?sort=descAsc|}">Description <span hidden="hidden">▲</span></a></th>
+                <th><a class="as-text" th:href="@{|/?sort=priorityAsc|}">Priority <span hidden="hidden">▲</span></a></th>
+                <th><a class="as-text">Actions</a></th>
             </tr>
             <tr th:each="ticket : ${tickets}">
                 <td th:text="${ticket.name}"></td>
