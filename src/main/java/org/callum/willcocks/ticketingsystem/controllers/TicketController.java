@@ -36,7 +36,7 @@ public class TicketController {
     }
 
     @GetMapping("/")
-    public String listTickets(Model model, Authentication authentication) {
+    public String listTickets(Model model, Authentication authentication, @RequestParam Optional<String> sort) {
         if (authentication.getAuthorities().stream().noneMatch(a -> Objects.equals(a.getAuthority(), "ROLE_view-all-tickets"))) {
             User user = userRepository.findUserByDisplayName(authentication.getName()).orElseGet(() -> {
                 User newUser = new User(authentication.getName());
@@ -45,7 +45,7 @@ public class TicketController {
             });
 
             List<TicketParticipants> byParticipant = participantRepository.findByParticipant(user);
-
+            //I need the database to include tickets the user is participating in!
             List<Ticket> ticketsToShowUser = new ArrayList<>();
             ticketsToShowUser.addAll(byParticipant.stream().map(TicketParticipants::getTicket).toList());
             ticketsToShowUser.addAll(ticketRepository.findTicketByCreatedBy(user));
